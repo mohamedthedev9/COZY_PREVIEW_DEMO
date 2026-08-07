@@ -4,10 +4,10 @@ import Marquee from "@/components/Marquee";
 import Manifesto from "@/components/Manifesto";
 import ProductGrid from "@/components/ProductGrid";
 import Footer from "@/components/Footer";
-import { getProducts } from "@/lib/api";
+import { getAllProducts } from "@/lib/api";
 
 export default async function Home() {
-  const products = await getProducts();
+  const products = await getAllProducts();
   const heroProduct =
     products.find((p) => p.category === "Outerwear") ?? products[0];
 
