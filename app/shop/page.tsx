@@ -1,10 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getProducts } from "@/lib/api";
+import { getAllProducts } from "@/lib/api";
 import ShopCatalogClient from "@/components/ShopCatalogClient";
 
 export default async function ShopPage() {
-  const products = await getProducts();
+  const products = await getAllProducts();
 
   return (
     <div className="min-h-screen bg-ink text-bone flex flex-col selection:bg-oxblood selection:text-bone">
