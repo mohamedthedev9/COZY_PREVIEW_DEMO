@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/*
+  COZY ERA — design tokens
+  Tailwind v4 is CSS-first: this @theme block *is* the config.
+  Every value here becomes a utility class automatically —
+  --color-oxblood → bg-oxblood / text-oxblood / border-oxblood, etc.
+*/
+@theme {
+  /* ---- Palette — Ink ground, Oxblood + Bronze jewel accents ---- */
+  --color-ink: #181110;          /* primary ground — warm near-black, not flat black */
+  --color-ink-soft: #241a17;     /* card / section fill, one step up from ink */
+  --color-oxblood: #5c1a2e;      /* primary accent — deep wine */
+  --color-oxblood-bright: #7c2440;
+  --color-bronze: #b58a52;       /* secondary accent — burnished metal */
+  --color-bronze-soft: #d4b37f;
+  --color-bone: #e7e1d3;         /* primary text on dark — warm bone, not cream */
+  --color-bone-bright: #f1ede3;
+  --color-moss: #3a4331;         /* tertiary accent — chip / tag fills */
+  --color-moss-bright: #7c9067;  /* moss family, lifted for text-on-dark use */
+  --color-smoke: #8c8177;        /* secondary / muted text */
+
+  /* ---- Type ---- */
+  --font-display: var(--font-fraunces), "Iowan Old Style", ui-serif, Georgia, serif;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* ---- Motion ---- */
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-spine: spine-scroll 46s linear infinite;
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes spine-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@layer base {
+  * {
+    border-color: color-mix(in srgb, var(--color-bone) 12%, transparent);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-oxblood);
+    color: var(--color-bone-bright);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-bronze);
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  .vertical-rl {
+    writing-mode: vertical-rl;
+  }
+
+  .text-stroke {
+    -webkit-text-stroke: 1px var(--color-bone);
+    color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
