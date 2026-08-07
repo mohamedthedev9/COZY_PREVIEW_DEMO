@@ -1,25 +1,43 @@
-import type { Product } from "./types";
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image: string;
+  description?: string;
+  details?: string[];
+}
 
-// Server-only — set in .env.local for staging/production. Falls back to the
-// local Express API so the site works out of the box in development.
-const API_URL = process.env.API_URL ?? "http://localhost:5000";
+export const products: Product[] = [
+  {
+    id: '1',
+    name: 'Merino Wool Oversized Knit',
+    price: 340,
+    category: 'Knitwear',
+    image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80',
+    description: 'Crafted from the finest merino wool, this oversized knit offers unparalleled comfort and effortless luxury.',
+    details: ['100% Extra-fine Merino Wool', 'Relaxed silhouette', 'Ribbed trims'],
+  },
+  {
+    id: '2',
+    name: 'Structured Cashmere Overcoat',
+    price: 890,
+    category: 'Outerwear',
+    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80',
+    description: 'A masterclass in tailoring, this cashmere overcoat provides warmth and sophisticated style.',
+    details: ['100% Cashmere', 'Structured shoulders', 'Satin lining'],
+  },
+];
 
-export async function getProducts(): Promise<Product[]> {
-  try {
-    const res = await fetch(`${API_URL}/api/products`, {
-      // The catalog doesn't change on every request — revalidate quietly
-      // in the background instead of caching forever or refetching every load.
-      next: { revalidate: 60 },
-    });
+// Export all function name variations to prevent any mismatch errors
+export function getProducts() {
+  return products;
+}
 
-    if (!res.ok) {
-      throw new Error(`Products request failed with status ${res.status}`);
-    }
+export function getAllProducts() {
+  return products;
+}
 
-    const json = await res.json();
-    return (json.data ?? []) as Product[];
-  } catch (error) {
-    console.error("[COZY ERA] Failed to load products:", error);
-    return [];
-  }
+export function getProductById(id: string) {
+  return products.find((p) => p.id === id);
 }
