@@ -1,25 +1,47 @@
-import type { Product } from "./types";
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image: string;
+  description: string;
+  details: string[];
+}
 
-// Server-only — set in .env.local for staging/production. Falls back to the
-// local Express API so the site works out of the box in development.
-const API_URL = process.env.API_URL ?? "http://localhost:5000";
+export const products: Product[] = [
+  {
+    id: '1',
+    name: 'Merino Wool Oversized Knit',
+    price: 340,
+    category: 'Knitwear',
+    image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop',
+    description: 'Crafted from ultra-fine Australian merino wool, designed with an effortless dropped shoulder.',
+    details: ['100% Extra-fine Merino Wool', 'Ribbed hems', 'Made in Portugal'],
+  },
+  {
+    id: '2',
+    name: 'Structured Cashmere Overcoat',
+    price: 890,
+    category: 'Outerwear',
+    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1000&auto=format&fit=crop',
+    description: 'A commanding silhouette tailored from double-face cashmere with horn button closures.',
+    details: ['100% Cashmere', 'Satin lining', 'Dry clean only'],
+  },
+  {
+    id: '3',
+    name: 'Silk Slip Dress',
+    price: 450,
+    category: 'Dresses',
+    image: 'https://images.unsplash.com/photo-1502716119720-b23a93e5fb1b?q=80&w=1000&auto=format&fit=crop',
+    description: 'Cut on the bias from washed silk satin for a fluid, body-skimming drape.',
+    details: ['100% Mulberry Silk', 'Adjustable straps', 'Midi length'],
+  },
+];
 
-export async function getProducts(): Promise<Product[]> {
-  try {
-    const res = await fetch(`${API_URL}/api/products`, {
-      // The catalog doesn't change on every request — revalidate quietly
-      // in the background instead of caching forever or refetching every load.
-      next: { revalidate: 60 },
-    });
+export function getAllProducts(): Product[] {
+  return products;
+}
 
-    if (!res.ok) {
-      throw new Error(`Products request failed with status ${res.status}`);
-    }
-
-    const json = await res.json();
-    return (json.data ?? []) as Product[];
-  } catch (error) {
-    console.error("[COZY ERA] Failed to load products:", error);
-    return [];
-  }
+export function getProductById(id: string): Product | undefined {
+  return products.find((p) => p.id === id);
 }
