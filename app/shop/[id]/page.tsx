@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getProducts } from '@/lib/api';
+import { getProductById } from "@/lib/api";
 
 interface Product {
   id: string;
@@ -28,7 +28,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const products = await getProducts();
+        const product = getProductById(id);
         const found = products.find((p: Product) => p.id === resolvedParams.id || p.name.toLowerCase().replace(/\s+/g, '-') === resolvedParams.id);
         setProduct(found || products[0]); // Fallback to first product if not found for testing
       } catch (err) {
