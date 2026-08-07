@@ -12,12 +12,12 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Link href={`/product/${product.id}`} className="group block">
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#1a1614] mb-4">
+    <Link href={`/shop/${product.id}`} className="group block">
+      <div className="relative w-full h-[420px] overflow-hidden bg-[#1a1614] mb-4">
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="flex justify-between items-start text-[#f3ede2]">
