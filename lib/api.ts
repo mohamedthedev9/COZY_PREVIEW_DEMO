@@ -23,3 +23,12 @@ export async function getProducts(): Promise<Product[]> {
     return [];
   }
 }
+
+// Reuses getProducts() rather than calling a separate endpoint, since there's
+// no dedicated /api/products/:id route on the Express API — this also means
+// it benefits from the same 60s revalidation instead of adding its own fetch.
+// If the catalog grows large, swap this for a real single-product endpoint.
+export async function getProductById(id: string): Promise<Product | null> {
+  const products = await getProducts();
+  return products.find((product) => product.id === id) ?? null;
+}
