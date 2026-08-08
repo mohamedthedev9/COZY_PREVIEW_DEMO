@@ -33,7 +33,7 @@ const products: Product[] = [
     name: "Tailored Wool Trench Coat",
     price: 540,
     category: "Outerwear",
-    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=1000",
     description: "Structured wool blend designed to outlast the season in absolute style.",
     details: ["Virgin wool and cashmere blend", "Double-breasted button front", "Self-tie belt", "Fully lined"]
   },
