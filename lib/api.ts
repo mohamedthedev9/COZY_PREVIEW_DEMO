@@ -1,37 +1,3 @@
-import type { Product } from "./types";
-
-// Server-only — set in .env.local for staging/production. Falls back to the
-// local Express API so the site works out of the box in development.
-const API_URL = process.env.API_URL ?? "http://localhost:5000";
-
-export async function getProducts(): Promise<Product[]> {
-  try {
-    const res = await fetch(`${API_URL}/api/products`, {
-      // The catalog doesn't change on every request — revalidate quietly
-      // in the background instead of caching forever or refetching every load.
-      next: { revalidate: 60 },
-    });
-
-    if (!res.ok) {
-      throw new Error(`Products request failed with status ${res.status}`);
-    }
-
-    const json = await res.json();
-    return (json.data ?? []) as Product[];
-  } catch (error) {
-    console.error("[COZY ERA] Failed to load products:", error);
-    return [];
-  }
-}
-
-// Reuses getProducts() rather than calling a separate endpoint, since there's
-// no dedicated /api/products/:id route on the Express API — this also means
-// it benefits from the same 60s revalidation instead of adding its own fetch.
-// If the catalog grows large, swap this for a real single-product endpoint.
-export async function getProductById(id: string): Promise<Product | null> {
-  const products = await getProducts();
-  return products.find((product) => product.id === id) ?? null;
-}
 export interface Product {
   id: string;
   name: string;
@@ -39,5 +5,54 @@ export interface Product {
   category: string;
   image: string;
   description: string;
-  details?: string[]; // 
+  details?: string[];
+}
+
+// قائمة المنتجات الخاصة بالموقع
+const products: Product[] = [
+  {
+    id: "1",
+    name: "Cashmere Oversized Turtleneck",
+    price: 280,
+    category: "Knitwear",
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800",
+    description: "Luxurious cashmere cut for unmatched comfort and timeless elegance.",
+    details: ["100% Pure Cashmere", "Oversized relaxed fit", "Ribbed high neckline", "Made in Italy"]
+  },
+  {
+    id: "2",
+    name: "Silk Slip Midi Dress",
+    price: 320,
+    category: "Dresses",
+    image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=800",
+    description: "An effortless silhouette crafted from premium mulberry silk.",
+    details: ["100% Mulberry Silk", "V-neckline", "Adjustable delicate straps", "Dry clean only"]
+  },
+  {
+    id: "3",
+    name: "Tailored Wool Trench Coat",
+    price: 540,
+    category: "Outerwear",
+    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=800",
+    description: "Structured wool blend designed to outlast the season in absolute style.",
+    details: ["Virgin wool and cashmere blend", "Double-breasted button front", "Self-tie belt", "Fully lined"]
+  },
+  {
+    id: "4",
+    name: "Pleated Linen Wide-Leg Trousers",
+    price: 220,
+    category: "Bottoms",
+    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=800",
+    description: "Lightweight, breathable linen tailored for effortless everyday movement.",
+    details: ["100% Organic Linen", "High-waisted fit", "Front pleats", "Side pockets"]
+  }
+];
+
+export async function getProducts(): Promise<Product[]> {
+  return products;
+}
+
+export async function getProductById(id: string): Promise<Product | null> {
+  const product = products.find((p) => p.id === id);
+  return product || null;
 }
