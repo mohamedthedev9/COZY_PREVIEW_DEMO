@@ -1,66 +1,40 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useCart } from '@/context/CartContext';
+import { motion } from "framer-motion";
+import ProductCard from "./ProductCard";
+import type { Product } from "@/lib/types";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  category: string;
-  image: string;
-}
+export default function ProductGrid({
+  products,
+  limit,
+}: {
+  products: Product[];
+  /** Show only the first N products — used for the homepage teaser. */
+  limit?: number;
+}) {
+  const items = limit ? products.slice(0, limit) : products;
 
-export default function ProductGrid({ products }: { products: Product[] }) {
-  const { addItem } = useCart();
+  if (items.length === 0) {
+    return (
+      <div className="mx-auto max-w-[1600px] px-6 py-24 text-center md:px-10">
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-ink-soft">
+          The edit is being restocked. Check back shortly.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-      {products.map((product) => (
-        <div key={product.id} className="group relative flex flex-col">
-          {/* Card Image Link */}
-          <Link href={`/shop/${product.id}`} className="block overflow-hidden bg-ink-soft border border-bronze/20 aspect-[4/5] relative">
-            <img 
-              src={product.image} 
-              alt={product.name} 
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-            />
-            {/* Quick Add Overlay Button */}
-            <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-ink/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex justify-center">
-              <button
-                onClick={(e) => {
-                  e.preventDefault(); // Prevents link navigation when clicking add to bag directly
-                  addItem({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    size: 'M', // Default quick-add size
-                  });
-                }}
-                className="w-full py-3 bg-bronze text-ink font-mono text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-bone transition-colors"
-              >
-                Add to Bag
-              </button>
-            </div>
-          </Link>
-
-          {/* Details */}
-          <div className="flex justify-between items-start mt-4">
-            <div>
-              <span className="font-mono text-[10px] tracking-[0.2em] text-bronze uppercase block mb-1">
-                {product.category}
-              </span>
-              <Link href={`/shop/${product.id}`} className="font-display text-xl text-bone hover:text-bronze transition-colors">
-                {product.name}
-              </Link>
-            </div>
-            <span className="font-mono text-sm text-smoke">
-              ${product.price.toFixed(2)}
-            </span>
-          </div>
-        </div>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+      className="mx-auto grid max-w-[1600px] grid-cols-2 gap-x-5 gap-y-10 px-6 sm:gap-x-6 md:grid-cols-3 md:gap-x-8 md:px-10 lg:grid-cols-4"
+    >
+      {items.map((product, i) => (
+        <ProductCard key={product.id} product={product} priority={i === 0} />
       ))}
-    </div>
+    </motion.div>
   );
 }

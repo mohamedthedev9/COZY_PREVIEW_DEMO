@@ -2,14 +2,7 @@
 
 import { useState } from 'react';
 import ProductGrid from '@/components/ProductGrid';
-
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  category: string;
-  image: string;
-}
+import type { Product } from '@/lib/types';
 
 export default function ShopCatalogClient({ initialProducts }: { initialProducts: Product[] }) {
   const [selectedCategory, setSelectedCategory] = useState('ALL');

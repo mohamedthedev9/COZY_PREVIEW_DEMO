@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import SpineTicker from "./SpineTicker";
 
 const FALLBACK_IMAGE =
@@ -47,9 +49,14 @@ export default function Hero({
     <section
       ref={ref}
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden border-b border-bone/10 pt-28"
+      className="relative flex min-h-[100svh] items-center overflow-hidden border-b border-ink/10 pt-28"
     >
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_15%,var(--color-oxblood)_0%,transparent_45%),radial-gradient(circle_at_85%_75%,var(--color-moss)_0%,transparent_40%)] opacity-40" />
+      {/* Soft, colorful ambient blobs — the "vibrant" wash behind the type */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -left-24 -top-24 h-[26rem] w-[26rem] rounded-full bg-coral-soft opacity-70 blur-3xl" />
+        <div className="absolute -right-16 top-1/3 h-[24rem] w-[24rem] rounded-full bg-violet-soft opacity-70 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-[20rem] w-[20rem] rounded-full bg-teal-soft opacity-60 blur-3xl" />
+      </div>
 
       <SpineTicker />
 
@@ -59,7 +66,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-6 font-mono text-[11px] uppercase tracking-[0.4em] text-bronze"
+            className="mb-6 font-mono text-[11px] uppercase tracking-[0.4em] text-coral"
           >
             AW26 — The Quiet Hour Edit
           </motion.p>
@@ -68,7 +75,7 @@ export default function Hero({
             variants={container}
             initial="hidden"
             animate="visible"
-            className="font-display text-[15vw] font-light leading-[0.92] tracking-tight text-bone sm:text-[10vw] md:text-[6.4vw]"
+            className="font-display text-[13vw] font-light leading-[0.92] tracking-tight text-ink sm:text-[9vw] md:text-[6.4vw]"
           >
             {HEADLINE_LINES.map((line, i) => (
               <span key={i} className="block overflow-hidden">
@@ -79,7 +86,11 @@ export default function Hero({
                   >
                     <motion.span
                       variants={word}
-                      className={`inline-block ${w.accent ? "italic text-bronze-soft" : ""}`}
+                      className={`inline-block ${
+                        w.accent
+                          ? "bg-gradient-to-r from-coral to-violet bg-clip-text italic text-transparent"
+                          : ""
+                      }`}
                     >
                       {w.text}
                     </motion.span>
@@ -93,7 +104,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 1.1 }}
-            className="mt-8 max-w-sm text-balance text-sm leading-relaxed text-smoke md:text-base"
+            className="mt-8 max-w-sm text-balance text-sm leading-relaxed text-ink-soft md:text-base"
           >
             Cashmere, silk, and wool, cut for a life that doesn&apos;t perform for
             anyone. Four pieces, built to outlast the season they arrived in.
@@ -105,15 +116,17 @@ export default function Hero({
             transition={{ duration: 0.7, delay: 1.3 }}
             className="mt-10"
           >
-            <a
-              href="#shop"
-              className="group inline-flex items-center gap-3 border border-bronze/50 px-7 py-3.5 font-mono text-xs uppercase tracking-[0.25em] text-bone transition-colors duration-300 ease-editorial hover:border-bronze hover:bg-bronze/10"
+            <Link
+              href="/shop"
+              className="group inline-flex items-center gap-3 rounded-full bg-coral px-7 py-3.5 font-mono text-xs uppercase tracking-[0.25em] text-ink transition-all duration-300 ease-editorial hover:scale-[1.02] hover:shadow-[0_10px_36px_-8px_rgba(255,107,74,0.55)]"
             >
               Shop the Edit
-              <span className="transition-transform duration-300 ease-editorial group-hover:translate-x-1">
-                →
-              </span>
-            </a>
+              <ArrowRight
+                size={15}
+                strokeWidth={2}
+                className="transition-transform duration-300 ease-editorial group-hover:translate-x-1"
+              />
+            </Link>
           </motion.div>
         </motion.div>
 
@@ -122,9 +135,9 @@ export default function Hero({
           initial={{ opacity: 0, scale: 1.06 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 -mb-24 md:col-span-5 md:-mb-32"
+          className="relative z-10 -mb-10 sm:-mb-16 md:col-span-5 md:-mb-32"
         >
-          <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden md:ml-auto md:max-w-none">
+          <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-[2rem] shadow-2xl shadow-violet-soft md:ml-auto md:max-w-none">
             <Image
               src={imageSrc || FALLBACK_IMAGE}
               alt={imageAlt || "COZY ERA Autumn 26 edit"}
@@ -133,7 +146,7 @@ export default function Hero({
               sizes="(min-width: 768px) 40vw, 90vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
           </div>
         </motion.div>
       </div>
@@ -141,7 +154,7 @@ export default function Hero({
       <motion.div
         animate={reduceMotion ? {} : { y: [0, 8, 0], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-8 left-6 hidden font-mono text-[10px] uppercase tracking-[0.3em] text-smoke md:left-10 md:block"
+        className="absolute bottom-8 left-6 hidden font-mono text-[10px] uppercase tracking-[0.3em] text-ink-soft md:left-10 md:block"
       >
         Scroll
       </motion.div>

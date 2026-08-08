@@ -4,21 +4,21 @@
   COZY ERA — design tokens
   Tailwind v4 is CSS-first: this @theme block *is* the config.
   Every value here becomes a utility class automatically —
-  --color-oxblood → bg-oxblood / text-oxblood / border-oxblood, etc.
+  --color-coral → bg-coral / text-coral / border-coral, etc.
 */
 @theme {
-  /* ---- Palette — Ink ground, Oxblood + Bronze jewel accents ---- */
-  --color-ink: #181110;          /* primary ground — warm near-black, not flat black */
-  --color-ink-soft: #241a17;     /* card / section fill, one step up from ink */
-  --color-oxblood: #5c1a2e;      /* primary accent — deep wine */
-  --color-oxblood-bright: #7c2440;
-  --color-bronze: #b58a52;       /* secondary accent — burnished metal */
-  --color-bronze-soft: #d4b37f;
-  --color-bone: #e7e1d3;         /* primary text on dark — warm bone, not cream */
-  --color-bone-bright: #f1ede3;
-  --color-moss: #3a4331;         /* tertiary accent — chip / tag fills */
-  --color-moss-bright: #7c9067;  /* moss family, lifted for text-on-dark use */
-  --color-smoke: #8c8177;        /* secondary / muted text */
+  /* ---- Palette — bright paper ground, vivid coral/violet/teal accents ---- */
+  --color-paper: #fdfbf8;        /* page ground — warm bright white */
+  --color-surface: #f5efe4;      /* card fill / alternate section bg */
+  --color-ink: #1b1730;          /* primary text — deep indigo-black, not flat black */
+  --color-ink-soft: #4a4560;     /* secondary / muted text */
+  --color-coral: #ff6b4a;        /* primary accent — CTAs, price, energy */
+  --color-coral-soft: #ffdccf;   /* pale coral tint — surfaces, badges */
+  --color-violet: #7c5cfc;       /* secondary accent — links, active states */
+  --color-violet-soft: #e5deff;  /* pale violet tint — surfaces */
+  --color-teal: #14b8a6;         /* tertiary accent — category tags */
+  --color-teal-soft: #cff3ec;    /* pale teal tint — surfaces */
+  --color-sun: #ffc93c;          /* quaternary accent — small highlights */
 
   /* ---- Type ---- */
   --font-display: var(--font-fraunces), "Iowan Old Style", ui-serif, Georgia, serif;
@@ -51,7 +51,7 @@
 
 @layer base {
   * {
-    border-color: color-mix(in srgb, var(--color-bone) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-ink) 10%, transparent);
   }
 
   html {
@@ -59,19 +59,19 @@
   }
 
   body {
-    background-color: var(--color-ink);
-    color: var(--color-bone);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background-color: var(--color-oxblood);
-    color: var(--color-bone-bright);
+    background-color: var(--color-coral);
+    color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-bronze);
+    outline: 2px solid var(--color-violet);
     outline-offset: 3px;
   }
 }
@@ -82,7 +82,7 @@
   }
 
   .text-stroke {
-    -webkit-text-stroke: 1px var(--color-bone);
+    -webkit-text-stroke: 1px var(--color-ink);
     color: transparent;
   }
 }

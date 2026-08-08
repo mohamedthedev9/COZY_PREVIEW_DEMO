@@ -10,7 +10,7 @@ export default function SpineTicker() {
         {[0, 1].map((i) => (
           <span
             key={i}
-            className="vertical-rl rotate-180 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.4em] text-bronze/70"
+            className="vertical-rl rotate-180 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.4em] text-violet/60"
           >
             {SPINE_TEXT.repeat(4)}
           </span>

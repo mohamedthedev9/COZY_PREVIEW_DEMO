@@ -1,10 +1,29 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 
 export default function CartDrawer() {
   const { isCartOpen, toggleCart, cart, removeItem, totalPrice } = useCart();
+
+  // Lock background scroll and allow Escape to close while the drawer is open.
+  useEffect(() => {
+    if (!isCartOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') toggleCart();
+    };
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isCartOpen, toggleCart]);
 
   return (
     <AnimatePresence>
@@ -25,6 +44,9 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Shopping bag"
             className="fixed top-0 right-0 h-full w-full md:w-[420px] bg-ink border-l border-bronze/20 z-[101] p-8 flex flex-col justify-between"
           >
             <div>

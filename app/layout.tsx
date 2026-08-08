@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Archivo, IBM_Plex_Mono } from "next/font/google";
 import { MotionConfig } from "framer-motion";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
-import CartDrawer from "@/components/CartDrawer";
 
 // Display — avant-garde, editorial serif. Used large, used rarely.
 const fraunces = Fraunces({
@@ -33,6 +33,12 @@ export const metadata: Metadata = {
     "Cashmere, silk, wool, and linen cut for a life that doesn't perform for anyone. The COZY ERA Autumn 26 edit.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#fdfbf8",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -43,15 +49,14 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${archivo.variable} ${plexMono.variable}`}
     >
-      <body className="bg-ink">
+      <body className="bg-paper">
         {/* reducedMotion="user" makes every animation on the page defer to the
             visitor's OS-level "reduce motion" setting, with no extra work
             required in individual components. */}
         <MotionConfig reducedMotion="user">
-          <CartProvider>
-            {children}
-            <CartDrawer />
-          </CartProvider>
+          <Navbar />
+          {children}
+          <Footer />
         </MotionConfig>
       </body>
     </html>

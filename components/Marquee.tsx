@@ -12,13 +12,13 @@ export default function Marquee() {
   return (
     <div
       aria-hidden="true"
-      className="overflow-hidden border-y border-bone/10 bg-ink-soft py-4"
+      className="overflow-hidden bg-gradient-to-r from-coral via-violet to-teal py-4"
     >
       <div className="animate-marquee flex w-max gap-16 will-change-transform">
         {[0, 1].map((i) => (
           <span
             key={i}
-            className="whitespace-nowrap font-mono text-xs uppercase tracking-[0.3em] text-bronze/80"
+            className="whitespace-nowrap font-mono text-xs uppercase tracking-[0.3em] text-paper"
           >
             {content}
             <span className="mx-16">—</span>

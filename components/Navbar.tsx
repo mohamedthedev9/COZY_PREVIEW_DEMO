@@ -1,32 +1,112 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useCart } from '@/context/CartContext';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, ShoppingBag, X } from "lucide-react";
+
+const LINKS = [
+  { label: "Shop", href: "/shop" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
 
 export default function Navbar() {
-  const { toggleCart, totalItems } = useCart();
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 64);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close the mobile drawer whenever the route changes.
+  useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header className="flex items-center justify-between px-8 lg:px-16 py-6 border-b border-bone/10 sticky top-0 bg-ink/90 backdrop-blur-md z-50">
-      <Link href="/" className="font-display text-2xl tracking-[4px] uppercase text-bone">
-        Cozy Era
-      </Link>
-      
-      <nav className="hidden md:flex items-center gap-10 text-xs uppercase tracking-[3px] font-mono text-smoke">
-        <Link href="/shop" className="hover:text-bone transition-colors">Collection</Link>
-        <Link href="/about" className="hover:text-bone transition-colors">About</Link>
-        <Link href="/contact" className="hover:text-bone transition-colors">Contact</Link>
-      </nav>
-
-      <div className="flex items-center gap-6 text-xs uppercase tracking-[2px] font-mono">
-        <Link href="/login" className="text-smoke hover:text-bone transition-colors">Sign In</Link>
-        <button 
-          onClick={toggleCart} 
-          className="px-5 py-2.5 bg-bronze text-ink hover:bg-bone transition-colors font-medium cursor-pointer"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ease-editorial ${
+        scrolled
+          ? "border-b border-ink/10 bg-paper/90 backdrop-blur-md"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 md:px-10">
+        <Link
+          href="/"
+          className="font-display text-lg uppercase tracking-[0.3em] text-ink"
         >
-          Cart ({totalItems})
-        </button>
+          Cozy&nbsp;Era
+        </Link>
+
+        <nav className="hidden items-center gap-10 md:flex">
+          {LINKS.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={`font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${
+                  active ? "text-violet" : "text-ink-soft hover:text-coral"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="flex items-center gap-5">
+          <button
+            type="button"
+            aria-label="View bag"
+            className="rounded-full p-1.5 text-ink transition-colors hover:bg-coral-soft hover:text-coral"
+          >
+            <ShoppingBag size={18} strokeWidth={1.75} />
+          </button>
+          <button
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+            className="rounded-full p-1.5 text-ink md:hidden"
+          >
+            {open ? (
+              <X size={20} strokeWidth={1.75} />
+            ) : (
+              <Menu size={20} strokeWidth={1.75} />
+            )}
+          </button>
+        </div>
       </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden rounded-b-3xl border-t border-ink/10 bg-paper shadow-xl md:hidden"
+          >
+            <div className="flex flex-col gap-6 px-6 py-8">
+              {LINKS.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="font-display text-2xl italic text-ink"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
