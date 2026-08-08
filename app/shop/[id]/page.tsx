@@ -48,7 +48,7 @@ export default async function ProductPage({ params }: PageProps) {
             </h1>
 
             <p className="text-2xl font-semibold text-gray-900">
-              ${product.price}
+              EGP{product.price}
             </p>
 
             <p className="text-gray-600 leading-relaxed">

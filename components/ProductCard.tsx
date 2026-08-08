@@ -68,7 +68,7 @@ export default function ProductCard({
           </h3>
         </div>
         <span className="whitespace-nowrap font-mono text-sm font-medium text-coral">
-          ${product.price}
+          EGP{product.price}
         </span>
       </div>
     </motion.article>
