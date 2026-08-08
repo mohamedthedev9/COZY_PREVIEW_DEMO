@@ -32,3 +32,12 @@ export async function getProductById(id: string): Promise<Product | null> {
   const products = await getProducts();
   return products.find((product) => product.id === id) ?? null;
 }
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image: string;
+  description: string;
+  details?: string[]; // 
+}
